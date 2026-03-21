@@ -25,6 +25,14 @@
   -webkit-text-fill-color: transparent;
 }
 
+@utility scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 :root {
   --background: #FDFBF8;
   --foreground: #2A1C16;

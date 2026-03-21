@@ -26,7 +26,7 @@ const ImageBannerSlider = () => {
   }, []);
 
   return (
-    <div className="relative w-full aspect-square md:aspect-[137/35] overflow-hidden bg-white group">
+    <div className="relative w-full aspect-square md:aspect-[16/5] overflow-hidden bg-white group">
       <AnimatePresence mode="wait">
         <motion.div
           key={index}
@@ -67,6 +67,48 @@ const ImageBannerSlider = () => {
   );
 };
 
+const CATEGORIES = [
+  { name: "Coffee", img: "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?q=80&w=2070&auto=format&fit=crop", href: "/shop?category=Coffee" },
+  { name: "Tea", img: "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?q=80&w=2070&auto=format&fit=crop", href: "/shop?category=Tea" },
+  { name: "Spices", img: "https://images.unsplash.com/photo-1506368249639-73a05d6f6488?q=80&w=2070&auto=format&fit=crop", href: "/shop?category=Spices" },
+  { name: "Dryfruit", img: "https://images.unsplash.com/photo-1596591606975-97ee5cef3a1e?q=80&w=2070&auto=format&fit=crop", href: "/shop?category=Dryfruit" },
+  { name: "Offers", img: "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?q=80&w=2070&auto=format&fit=crop", href: "/offers" },
+];
+
+const CategoryMenu = () => {
+  return (
+    <section className="pt-6 pb-12 md:pt-8 md:pb-16 bg-white">
+      <div className="container mx-auto px-6">
+        <div className="flex overflow-x-auto md:grid md:grid-cols-5 gap-8 pb-4 pt-6 scrollbar-hide snap-x snap-mandatory justify-start md:justify-center items-center">
+          {CATEGORIES.map((cat, i) => (
+            <Link
+              key={i}
+              href={cat.href}
+              className="flex flex-col items-center gap-6 group min-w-[110px] snap-center transition-all duration-700"
+            >
+              <div className="relative w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border border-black/5 group-hover:border-primary/20 transition-all duration-700 shadow-[0_8px_30px_rgb(0,0,0,0.04)] group-hover:shadow-[0_20px_50px_rgba(178,124,78,0.15)] group-hover:-translate-y-3 bg-white">
+                <Image
+                  src={cat.img}
+                  alt={cat.name}
+                  fill
+                  className="object-cover transition-transform duration-1000 ease-out group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/5 transition-colors duration-700" />
+              </div>
+              <div className="flex flex-col items-center gap-2">
+                <span className="text-[10px] md:text-xs font-bold text-muted group-hover:text-primary transition-all duration-500 text-center uppercase tracking-[0.25em]">
+                  {cat.name}
+                </span>
+                <div className="w-0 h-[1.5px] bg-primary group-hover:w-8 transition-all duration-500 rounded-full" />
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
 export default function Home() {
   const { scrollYProgress } = useScroll();
   const [isQuizOpen, setIsQuizOpen] = useState(false);
@@ -78,138 +120,10 @@ export default function Home() {
       {/* Professional Image Banners - Flush with Header (Blue Tokai Standard) */}
       <ImageBannerSlider />
 
-      {/* Futuristic Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-10">
-        {/* Animated Background Elements */}
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-30 z-0" />
-        <div className="absolute inset-0 bg-gradient-to-br from-coffee-light/40 via-background to-white z-0" />
+      {/* Round Menu Categories */}
+      <CategoryMenu />
 
-        {/* Soft Atmospheric Drifting Orbs */}
-        <motion.div
-          animate={{
-            y: [0, -40, 0],
-            x: [0, 30, 0],
-            scale: [1, 1.1, 1]
-          }}
-          transition={{
-            duration: 15,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-          className="absolute top-1/4 -left-32 w-96 h-96 bg-primary/10 rounded-full blur-[120px] mix-blend-multiply"
-        />
-        <motion.div
-          animate={{
-            y: [0, 60, 0],
-            x: [0, -40, 0],
-            scale: [1, 1.2, 1]
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-          className="absolute bottom-1/4 -right-32 w-[500px] h-[500px] bg-coffee-medium/10 rounded-full blur-[150px] mix-blend-multiply"
-        />
 
-        <div className="container mx-auto px-6 relative z-10 flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-24 min-h-[calc(100vh-120px)] pt-10 lg:pt-0">
-
-          {/* Hero Content */}
-          <div className="w-full lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left space-y-8 mt-12 lg:mt-0">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-white/50 backdrop-blur-sm text-primary font-medium text-sm"
-            >
-              <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-              Next-Gen Roasting
-            </motion.div>
-
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-              className="text-5xl md:text-6xl lg:text-8xl font-bold leading-[1.05]"
-            >
-              Brew the <span className="gradient-text italic">Future</span>
-            </motion.h1>
-
-            <motion.p
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-              className="text-lg md:text-xl text-muted max-w-xl font-light leading-relaxed"
-            >
-              Experience a paradigm shift in flavor. Artisan beans, sustainably sourced, and precision-roasted for the modern palate.
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
-              className="flex flex-col sm:flex-row items-center gap-4 pt-4"
-            >
-              <motion.div
-                whileHover={{ scale: 1.05, y: -5 }}
-                whileTap={{ scale: 0.95 }}
-                className="w-full sm:w-auto"
-              >
-                <Link href="/shop" className="w-full bg-primary text-white px-8 py-4 rounded-xl font-bold hover:bg-foreground transition-all duration-300 shadow-[0_20px_40px_rgba(198,156,109,0.2)] flex items-center justify-center gap-2 group">
-                  Shop Collection <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </motion.div>
-              <motion.button
-                onClick={() => setIsQuizOpen(true)}
-                whileHover={{ scale: 1.05, y: -5 }}
-                whileTap={{ scale: 0.95 }}
-                className="w-full sm:w-auto px-8 py-4 rounded-xl font-bold text-foreground border border-black/10 hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 flex items-center justify-center gap-2 group"
-              >
-                Find My Match <Coffee className="w-5 h-5 text-primary group-hover:rotate-12 transition-transform" />
-              </motion.button>
-            </motion.div>
-          </div>
-
-          <div className="w-full lg:w-1/2 h-full flex items-center justify-center relative mt-8 lg:mt-0 pb-20 lg:pb-0">
-            {/* 3D-like floating coffee element */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{
-                opacity: 1,
-                scale: 1,
-                y: [0, -20, 0]
-              }}
-              transition={{
-                opacity: { duration: 1.2, delay: 0.4 },
-                scale: { duration: 1.2, delay: 0.4 },
-                y: { duration: 6, repeat: Infinity, ease: "easeInOut" }
-              }}
-              className="relative w-64 h-64 md:w-96 md:h-96"
-            >
-              <div className="absolute inset-0 border border-primary/30 rounded-full animate-[spin_15s_linear_infinite]" />
-              <div className="absolute inset-4 border border-primary/20 rounded-full animate-[spin_20s_linear_infinite_reverse]" />
-              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-coffee-light to-white rounded-full shadow-[0_30px_60px_rgba(0,0,0,0.05)]">
-                <Coffee className="w-24 h-24 md:w-32 md:h-32 text-primary drop-shadow-[0_0_15px_rgba(198,156,109,0.3)]" />
-              </div>
-
-              {/* Floating Badges */}
-              <motion.div
-                animate={{ y: [0, -15, 0] }}
-                transition={{ repeat: Infinity, duration: 5, ease: "easeInOut" }}
-                className="absolute -right-4 md:-right-12 top-1/4 glass px-4 py-3 rounded-xl flex items-center gap-3 backdrop-blur-md border border-black/5"
-              >
-                <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
-                  <Star className="w-4 h-4 text-primary fill-primary" />
-                </div>
-                <div>
-                  <p className="text-xs text-muted mb-0.5">Rating</p>
-                  <p className="text-sm font-bold text-foreground">4.9/5.0</p>
-                </div>
-              </motion.div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
 
       {/* Scroll Indicator */}
       <motion.div
@@ -217,11 +131,87 @@ export default function Home() {
         transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
         className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center text-muted"
       >
-        <div className="w-[1px] h-12 bg-gradient-to-b from-primary to-transparent" />
       </motion.div>
 
+      {/* New Arrivals Section */}
+      <section className="py-10 lg:py-16 px-6 md:px-12 bg-coffee-light/30 relative z-20">
+        <div className="container mx-auto">
+          <div className="flex flex-col md:flex-row items-center justify-between mb-16 gap-6">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.8 }}
+            >
+              <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">New <span className="gradient-text italic">Arrivals</span></h2>
+              <p className="text-muted max-w-xl">Fresh off the harvest. Discover our latest limited-edition micro-lots and seasonal blends.</p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.8 }}
+            >
+              <Link href="/shop" className="group flex items-center gap-2 text-primary font-bold hover:text-foreground transition-colors">
+                View All Products <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
+              </Link>
+            </motion.div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              { id: 10, name: "Himalayan Oolong", category: "Tea", price: "$28", rating: 4.9, notes: "Orchid, Honey, Stone Fruit", icon: Leaf },
+              { id: 6, name: "Kenya AA", category: "Coffee", price: "$29", rating: 4.9, notes: "Blackberry, Wine, Grapefruit", icon: Coffee },
+              { id: 18, name: "Kashmiri Saffron", category: "Spices", price: "$55", rating: 5.0, notes: "Hay, Honey, Metallic", icon: Star }
+            ].map((product, index) => (
+              <motion.div
+                key={product.id}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.6, delay: index * 0.2 }}
+                whileHover={{ y: -10 }}
+                className="glass rounded-2xl overflow-hidden group cursor-pointer border border-black/5 hover:border-primary/20 transition-all duration-300 shadow-lg"
+              >
+                <Link href={`/shop/${product.id}`} className="block h-full">
+                  <div className="h-64 bg-coffee-medium/20 relative flex items-center justify-center p-8 overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-10" />
+                    {/* Dynamic glow based on category */}
+                    <div className={cn(
+                      "absolute inset-0 opacity-20 group-hover:opacity-40 transition-opacity duration-500",
+                      product.category === "Coffee" ? "bg-[#8B5A2B]" : product.category === "Tea" ? "bg-[#4CAF50]" : "bg-[#FF9800]"
+                    )} />
+                    <product.icon className="w-24 h-24 text-white/20 group-hover:scale-110 group-hover:text-primary/50 transition-all duration-700 z-0" />
+                    <div className="absolute top-4 left-4 z-20 bg-background/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] uppercase font-bold text-primary border border-primary/20">
+                      {product.category}
+                    </div>
+                  </div>
+                  <div className="p-6">
+                    <div className="flex justify-between items-start mb-2">
+                      <h3 className="text-xl font-bold group-hover:text-primary transition-colors text-foreground">{product.name}</h3>
+                      <span className="font-bold text-lg text-primary">{product.price}</span>
+                    </div>
+                    <p className="text-sm text-muted mb-4 line-clamp-2">{product.notes}</p>
+                    <div className="flex items-center justify-between mt-6 pt-4 border-t border-black/5">
+                      <div className="flex items-center gap-1.5">
+                        <Star className="w-4 h-4 fill-primary text-primary" />
+                        <span className="text-sm font-bold">{product.rating}</span>
+                      </div>
+                      <span className="text-sm font-bold text-foreground group-hover:text-primary transition-colors flex items-center gap-1">
+                        View Details <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Shop by Category Section */}
-      <section className="py-20 lg:py-32 px-6 md:px-12 bg-background relative z-20 overflow-hidden">
+      <section className="py-10 lg:py-16 px-6 md:px-12 bg-background relative z-20 overflow-hidden">
         {/* Abstract Background Elements */}
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[100px] -z-10" />
         <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-coffee-medium/5 rounded-full blur-[120px] -z-10" />
@@ -310,85 +300,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* New Arrivals Section */}
-      <section className="py-20 lg:py-32 px-6 md:px-12 bg-background relative z-20">
-        <div className="container mx-auto">
-          <div className="flex flex-col md:flex-row items-center justify-between mb-16 gap-6">
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.8 }}
-            >
-              <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">New <span className="gradient-text italic">Arrivals</span></h2>
-              <p className="text-muted max-w-xl">Fresh off the harvest. Discover our latest limited-edition micro-lots and seasonal blends.</p>
-            </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.8 }}
-            >
-              <Link href="/shop" className="group flex items-center gap-2 text-primary font-bold hover:text-foreground transition-colors">
-                View All Products <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
-              </Link>
-            </motion.div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              { id: 10, name: "Himalayan Oolong", category: "Tea", price: "$28", rating: 4.9, notes: "Orchid, Honey, Stone Fruit", icon: Leaf },
-              { id: 6, name: "Kenya AA", category: "Coffee", price: "$29", rating: 4.9, notes: "Blackberry, Wine, Grapefruit", icon: Coffee },
-              { id: 18, name: "Kashmiri Saffron", category: "Spices", price: "$55", rating: 5.0, notes: "Hay, Honey, Metallic", icon: Star }
-            ].map((product, index) => (
-              <motion.div
-                key={product.id}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.6, delay: index * 0.2 }}
-                whileHover={{ y: -10 }}
-                className="glass rounded-2xl overflow-hidden group cursor-pointer border border-black/5 hover:border-primary/20 transition-all duration-300 shadow-lg"
-              >
-                <Link href={`/shop/${product.id}`} className="block h-full">
-                  <div className="h-64 bg-coffee-medium/20 relative flex items-center justify-center p-8 overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-10" />
-                    {/* Dynamic glow based on category */}
-                    <div className={cn(
-                      "absolute inset-0 opacity-20 group-hover:opacity-40 transition-opacity duration-500",
-                      product.category === "Coffee" ? "bg-[#8B5A2B]" : product.category === "Tea" ? "bg-[#4CAF50]" : "bg-[#FF9800]"
-                    )} />
-                    <product.icon className="w-24 h-24 text-white/20 group-hover:scale-110 group-hover:text-primary/50 transition-all duration-700 z-0" />
-                    <div className="absolute top-4 left-4 z-20 bg-background/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] uppercase font-bold text-primary border border-primary/20">
-                      {product.category}
-                    </div>
-                  </div>
-                  <div className="p-6">
-                    <div className="flex justify-between items-start mb-2">
-                      <h3 className="text-xl font-bold group-hover:text-primary transition-colors text-foreground">{product.name}</h3>
-                      <span className="font-bold text-lg text-primary">{product.price}</span>
-                    </div>
-                    <p className="text-sm text-muted mb-4 line-clamp-2">{product.notes}</p>
-                    <div className="flex items-center justify-between mt-6 pt-4 border-t border-black/5">
-                      <div className="flex items-center gap-1.5">
-                        <Star className="w-4 h-4 fill-primary text-primary" />
-                        <span className="text-sm font-bold">{product.rating}</span>
-                      </div>
-                      <span className="text-sm font-bold text-foreground group-hover:text-primary transition-colors flex items-center gap-1">
-                        View Details <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                      </span>
-                    </div>
-                  </div>
-                </Link>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Promotional Banner Section */}
-      <section className="py-20 lg:py-24 px-6 md:px-12 relative z-20">
+      <section className="py-10 lg:py-16 px-6 md:px-12 relative z-20">
         <div className="container mx-auto">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
@@ -454,7 +369,7 @@ export default function Home() {
       </section>
 
       {/* Preparation Guides Section */}
-      <section className="py-20 lg:py-32 relative overflow-hidden bg-coffee-light/10">
+      <section className="py-10 lg:py-16 relative overflow-hidden bg-white">
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-30" />
         <div className="container mx-auto px-6 md:px-12 relative z-10">
           <div className="flex flex-col lg:flex-row items-center gap-16">
@@ -558,7 +473,7 @@ export default function Home() {
       </section>
 
       {/* Subscription Banner */}
-      <section className="py-20 lg:py-24 px-6 md:px-12 relative z-20">
+      <section className="py-10 lg:py-16 px-6 md:px-12 relative z-20">
         <div className="container mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -594,8 +509,7 @@ export default function Home() {
       </section>
 
       {/* Reviews Section */}
-      <section className="py-20 lg:py-24 relative overflow-hidden">
-        <div className="absolute inset-0 bg-primary/5" />
+      <section className="py-10 lg:py-16 relative overflow-hidden bg-coffee-light/15">
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20" />
 
         <div className="container mx-auto px-6 md:px-12 relative z-10 flex flex-col items-center">
@@ -619,6 +533,6 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
-    </div>
+    </div >
   );
 }
