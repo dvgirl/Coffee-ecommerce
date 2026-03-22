@@ -222,10 +222,45 @@ export default function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8 }}
-            className="text-center mb-20"
+            className="text-center mb-20 relative"
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">Explore Our <span className="gradient-text italic">Universe</span></h2>
-            <p className="text-muted max-w-2xl mx-auto">Beyond exceptional coffee, discover our curated selection of rare teas, artisanal dry fruits, and ethically sourced spices.</p>
+            {/* Abundant Decorative Small Cups */}
+            <div className="absolute inset-0 -top-20 -bottom-20 w-full pointer-events-none overflow-visible hidden md:block">
+              {[...Array(12)].map((_, i) => (
+                <motion.div 
+                  key={i}
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  animate={{ 
+                    y: [0, (i % 2 === 0 ? -20 : 20), 0], 
+                    rotate: [0, (i % 3 === 0 ? 15 : -15), 0],
+                    x: [0, (i % 4 === 0 ? 10 : -10), 0]
+                  }}
+                  transition={{ 
+                    duration: 4 + (i % 3), 
+                    repeat: Infinity, 
+                    ease: "easeInOut", 
+                    delay: i * 0.4 
+                  }}
+                  className="absolute pointer-events-none"
+                  style={{
+                    left: `${(i * 8.5) % 100}%`,
+                    top: `${(i * 13) % 100}%`,
+                    opacity: 0.05 + ((i % 5) * 0.04)
+                  }}
+                >
+                  <Coffee 
+                    className={cn(
+                      "text-primary/40",
+                      i % 4 === 0 ? "w-4 h-4" : i % 4 === 1 ? "w-6 h-6" : i % 4 === 2 ? "w-8 h-8" : "w-10 h-10"
+                    )} 
+                  />
+                </motion.div>
+              ))}
+            </div>
+
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground relative z-10">Test The <span className="gradient-text italic">Magic</span></h2>
+            <p className="text-muted max-w-2xl mx-auto relative z-10">Beyond exceptional coffee, discover our curated selection of rare teas, artisanal dry fruits, and ethically sourced spices.</p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -277,18 +312,16 @@ export default function Home() {
                     "h-full p-8 rounded-3xl glass border border-white/5 relative overflow-hidden flex flex-col items-start text-left transition-all duration-500",
                     "hover:shadow-[0_0_40px_rgba(178,124,78,0.05)] hover:border-black/10"
                   )}>
-                    {/* Dynamic Glow Background */}
-                    <div className={cn("absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-0", category.bgClass)} />
 
                     {/* Content */}
                     <div className="relative z-10 w-full">
                       <div className="w-14 h-14 rounded-2xl bg-black/5 flex items-center justify-center mb-6 group-hover:bg-primary/10 transition-colors border border-black/5 group-hover:border-primary/30 group-hover:scale-110 duration-500">
-                        <category.icon className="w-6 h-6 text-primary group-hover:text-white transition-colors" />
+                        <category.icon className="w-6 h-6 text-primary transition-colors" />
                       </div>
                       <h3 className="text-2xl font-bold mb-3 group-hover:text-primary transition-colors text-foreground">{category.title}</h3>
-                      <p className="text-muted text-sm leading-relaxed mb-8 group-hover:text-white/80 transition-colors">{category.desc}</p>
+                      <p className="text-muted text-sm leading-relaxed mb-8 group-hover:text-foreground transition-colors">{category.desc}</p>
 
-                      <div className="mt-auto flex items-center text-sm font-bold text-primary group-hover:text-white transition-colors gap-2">
+                      <div className="mt-auto flex items-center text-sm font-bold text-primary transition-colors gap-2">
                         Explore <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform duration-300" />
                       </div>
                     </div>
@@ -434,37 +467,31 @@ export default function Home() {
               <div className="absolute inset-0 rounded-3xl overflow-hidden glass border-primary/20 shadow-xl shadow-primary/5 flex items-center justify-center">
                 <div className="absolute inset-0 bg-gradient-to-tr from-coffee-dark/80 to-primary/10 animate-pulse-slow" />
 
-                {/* Abstract Timer/Brewing UI */}
-                <div className="relative z-10 w-64 h-64 md:w-80 md:h-80">
-                  {/* Outer Ring */}
-                  <svg className="absolute inset-0 w-full h-full -rotate-90">
-                    <circle cx="50%" cy="50%" r="48%" stroke="rgba(0,0,0,0.05)" strokeWidth="4" fill="none" />
-                    <motion.circle
-                      cx="50%"
-                      cy="50%"
-                      r="48%"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                      fill="none"
-                      className="text-primary drop-shadow-[0_0_10px_rgba(198,156,109,0.8)]"
-                      strokeDasharray="1000"
-                      strokeDashoffset="1000"
-                      animate={{ strokeDashoffset: [1000, 0] }}
-                      transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-                    />
-                  </svg>
+                {/* Aesthetic Coffee Video */}
+                <video
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  className="absolute inset-0 w-full h-full object-cover opacity-60"
+                >
+                  <source src="https://cdn.shopify.com/videos/c/o/v/e2b557a3730f49969da2ad109ec44e63.mp4" type="video/mp4" />
+                </video>
 
-                  <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <div className="text-6xl font-bold text-foreground mb-2 tabular-nums tracking-tighter">02:45</div>
-                    <div className="text-primary font-bold tracking-widest uppercase text-sm animate-pulse">Blooming...</div>
-                  </div>
+                {/* Subtle Overlays for Depth */}
+                <div className="absolute inset-0 bg-gradient-to-t from-coffee-dark/40 to-transparent z-10" />
+                <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent z-10" />
 
-                  {/* Water Drops Animation */}
+                {/* Decorative Elements */}
+                <div className="relative z-20 flex flex-col items-center justify-center p-8 text-center">
                   <motion.div
-                    animate={{ y: [0, 100], opacity: [0, 1, 0] }}
-                    transition={{ repeat: Infinity, duration: 1.5, ease: "easeIn" }}
-                    className="absolute top-1/4 left-1/2 -translate-x-1/2 w-2 h-4 rounded-full bg-blue-300/50 blur-[1px]"
-                  />
+                    animate={{ y: [0, -10, 0] }}
+                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                    className="w-20 h-20 rounded-full border border-white/20 flex items-center justify-center backdrop-blur-md bg-white/5 mb-4"
+                  >
+                    <Coffee className="w-8 h-8 text-primary shadow-glow" />
+                  </motion.div>
+                  <p className="text-white font-bold tracking-widest uppercase text-xs">Aura Brewing Ritual</p>
                 </div>
               </div>
             </motion.div>
