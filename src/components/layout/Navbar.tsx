@@ -8,14 +8,13 @@ import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 
 const NAV_LINKS = [
-  { name: "Home", href: "/" },
-  { name: "Coffee", href: "/shop?category=Coffee" },
-  { name: "Tea", href: "/shop?category=Tea" },
-  { name: "Spices", href: "/shop?category=Spices" },
-  { name: "Dryfruit", href: "/shop?category=Dryfruit" },
-  { name: "Offers", href: "/offers" },
-  { name: "About Us", href: "/about" },
-  { name: "Other", href: "/shop?category=Other" },
+  { name: "Home", href: "/#hero" },
+  { name: "Arrivals", href: "/#arrivals" },
+  { name: "Magic", href: "/#categories" },
+  { name: "Press", href: "/#story" },
+  { name: "Craft", href: "/#brew" },
+  { name: "Club", href: "/#club" },
+  { name: "Shop", href: "/shop" },
 ];
 
 export default function Navbar() {
@@ -30,6 +29,33 @@ export default function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    // Only handle internal anchors starting with /#
+    if (href.startsWith("/#")) {
+      const targetId = href.replace("/#", "");
+      const element = document.getElementById(targetId);
+      
+      if (element) {
+        e.preventDefault();
+        
+        // Use a more controlled smooth scroll
+        const offset = 80; // Navbar height offset
+        const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+        const offsetPosition = elementPosition - offset;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth"
+        });
+        
+        if (isMobileMenuOpen) setIsMobileMenuOpen(false);
+
+        // Update URL hash without jumping
+        window.history.pushState(null, "", `#${targetId}`);
+      }
+    }
+  };
 
   return (
     <nav className={cn(
@@ -48,6 +74,7 @@ export default function Navbar() {
           <Link 
             key={link.name}
             href={link.href}
+            onClick={(e) => scrollToSection(e, link.href)}
             className="px-5 py-2 text-[13px] font-bold uppercase tracking-[0.2em] text-foreground/80 hover:text-primary transition-all duration-300 relative group"
           >
             {link.name}
@@ -101,7 +128,7 @@ export default function Navbar() {
                </button>
             </div>
 
-            <div className="flex-1 flex flex-col gap-4 w-full overflow-y-auto pr-4">
+            <div className="flex-1 flex flex-col gap-4 w-full overflow-y-auto pr-4 border-none">
                {NAV_LINKS.map((link, idx) => (
                  <motion.div 
                    key={link.href}
@@ -111,7 +138,7 @@ export default function Navbar() {
                  >
                     <Link 
                       href={link.href} 
-                      onClick={() => setIsMobileMenuOpen(false)} 
+                      onClick={(e) => scrollToSection(e, link.href)} 
                       className="text-4xl font-bold hover:text-primary transition-all duration-300 block py-1"
                     >
                       {link.name}
