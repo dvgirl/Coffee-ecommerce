@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ShoppingCart, Menu, X, User, Heart } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useCart } from "@/context/CartContext";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
+import AnnouncementBar from "@/components/home/AnnouncementBar";
 
 const NAV_LINKS = [
   { name: "Home", href: "/#hero" },
@@ -21,6 +23,7 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { cartCount } = useCart();
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -58,7 +61,9 @@ export default function Navbar() {
   };
 
   return (
-    <nav className={cn(
+    <>
+      {pathname === "/" && <AnnouncementBar />}
+      <nav className={cn(
       "sticky top-0 w-full z-50 py-6 px-6 md:px-12 flex items-center justify-between transition-all duration-500 border-none bg-background/95 backdrop-blur-md",
       isScrolled ? "shadow-sm py-4" : "shadow-none"
     )}>
@@ -177,6 +182,7 @@ export default function Navbar() {
         )}
       </AnimatePresence>
     </nav>
+    </>
   );
 }
 
