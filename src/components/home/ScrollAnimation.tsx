@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { ReactNode } from "react";
 
 type AnimationProps = {
-  children: ReactNode;
+  children?: ReactNode;
   className?: string;
   animationType?: "fade-up" | "fade-left" | "fade-right" | "bounce" | "scale-up";
   delay?: number;
@@ -40,7 +40,7 @@ export default function ScrollAnimation({
       transition: {
         duration,
         delay,
-        ease: "easeOut"
+        ease: "easeOut" as any
       }
     }
   };
@@ -49,7 +49,7 @@ export default function ScrollAnimation({
     return (
       <motion.div
         animate={{ y: [0, 10, 0] }}
-        transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+        transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" as any }}
         className={className}
       >
         {children}
