@@ -1,328 +1,257 @@
-import { ArrowRight, Coffee, Package, Leaf, Star } from "lucide-react";
-import Link from "next/link";
-import { cn } from "@/lib/utils";
+import {
+  ArrowRight,
+  Coffee,
+  Leaf,
+  Package,
+  Sparkles,
+  Star,
+  Waves,
+  Zap,
+} from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import type { ReactNode } from "react";
 
-import ImageBannerSlider from "@/components/home/ImageBannerSlider";
-import FloatingCups from "@/components/home/FloatingCups";
-import ScrollAnimation from "@/components/home/ScrollAnimation";
 import DeferredVideo from "@/components/home/DeferredVideo";
+import ScrollAnimation from "@/components/home/ScrollAnimation";
 
-const CATEGORIES = [
-  { name: "Coffee", img: "/categories/coffee.png", href: "/shop?category=Coffee" },
-  { name: "Tea", img: "/categories/tea.png", href: "/shop?category=Tea" },
-  { name: "Spices", img: "/categories/spices.png", href: "/shop?category=Spices" },
-  { name: "Dryfruit", img: "/categories/dryfruit.png", href: "/shop?category=Dryfruit" },
-  { name: "Offers", img: "/categories/offers.png", href: "/shop?category=Offers" },
+const HERO_STATS = [
+  { value: "48H", label: "fresh roast dispatch" },
+  { value: "120+", label: "small batch releases" },
+  { value: "4.9", label: "average member rating" },
 ];
 
-const NEW_ARRIVALS = [
+const CATEGORIES = [
   {
-    id: "himalayan-oolong",
-    name: "Himalayan Oolong Tea",
-    price: "$28.00",
-    category: "Tea",
-    img: "/products/himalayan-oolong.png",
-    rating: 4.9,
-    notes: "Fresh orchid, wild honey, and delicate stone fruit undertones. Hand-plucked at 6,000ft.",
+    name: "Coffee",
+    description: "Single origin roasts with deeper sweetness and clean finish.",
+    image: "/categories/coffee.png",
+    href: "/shop?category=Coffee",
+    icon: Coffee,
   },
+  {
+    name: "Tea",
+    description: "Mountain-grown leaves with floral aroma and calm texture.",
+    image: "/categories/tea.png",
+    href: "/shop?category=Tea",
+    icon: Leaf,
+  },
+  {
+    name: "Spices",
+    description: "Rare saffron and aromatic staples chosen like luxury ingredients.",
+    image: "/categories/spices.png",
+    href: "/shop?category=Spices",
+    icon: Sparkles,
+  },
+  {
+    name: "Dryfruit",
+    description: "Premium textures and richer taste from carefully selected origins.",
+    image: "/categories/dryfruit.png",
+    href: "/shop?category=Dryfruit",
+    icon: Package,
+  },
+];
+
+const ARRIVALS = [
   {
     id: "kenya-aa",
     name: "Kenya AA Single Origin",
     price: "$29.00",
     category: "Coffee",
-    img: "/products/kenya-aa.png",
-    rating: 4.9,
-    notes: "Bright citrus acidity with rich blackberry and wine-like finish. Sustainable Arabica.",
+    image: "/products/kenya-aa.png",
+    note: "Blackberry brightness, rich citrus acidity, and a clean wine-like finish.",
+  },
+  {
+    id: "himalayan-oolong",
+    name: "Himalayan Oolong Tea",
+    price: "$28.00",
+    category: "Tea",
+    image: "/products/himalayan-oolong.png",
+    note: "Orchid aroma, wild honey sweetness, and a soft high-altitude finish.",
   },
   {
     id: "kashmiri-saffron",
     name: "Kashmiri Grade A Saffron",
     price: "$55.00",
     category: "Spices",
-    img: "/products/kashmiri-saffron.png",
-    rating: 5.0,
-    notes: "Deep crimson threads with intense metallic-floral aroma. The gold of spices from Pampore.",
+    image: "/products/kashmiri-saffron.png",
+    note: "Deep crimson threads with metallic floral character and lasting intensity.",
   },
 ];
 
-const CategoryMenu = () => {
+const BREW_GUIDES = [
+  { title: "Pour Over V60", meta: "3 min / medium skill" },
+  { title: "Traditional Matcha", meta: "2 min / advanced skill" },
+  { title: "Golden Saffron Milk", meta: "5 min / easy skill" },
+];
+
+function Eyebrow({ children, inverse = false }: { children: ReactNode; inverse?: boolean }) {
   return (
-    <section className="pt-6 pb-12 md:pt-8 md:pb-16 bg-white">
-      <div className="container mx-auto px-6">
-        <div className="flex overflow-x-auto md:grid md:grid-cols-5 gap-8 pb-4 pt-6 scrollbar-hide snap-x snap-mandatory justify-start md:justify-center items-center">
-          {CATEGORIES.map((cat, i) => (
-            <Link
-              key={i}
-              href={cat.href}
-              className="flex flex-col items-center gap-6 group min-w-[110px] snap-center transition-all duration-700"
-            >
-              <div className="relative w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border border-black/5 group-hover:border-primary/20 transition-all duration-700 shadow-[0_8px_30px_rgb(0,0,0,0.04)] group-hover:shadow-[0_20px_50px_rgba(178,124,78,0.15)] group-hover:-translate-y-3 bg-white">
-                <Image
-                  src={cat.img}
-                  alt={cat.name}
-                  fill
-                  className="object-cover transition-transform duration-1000 ease-out group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/5 transition-colors duration-700" />
-              </div>
-              <div className="flex flex-col items-center gap-2">
-                <span className="text-[10px] md:text-xs font-bold text-muted group-hover:text-primary transition-all duration-500 text-center uppercase tracking-[0.25em]">
-                  {cat.name}
-                </span>
-                <div className="w-0 h-[1.5px] bg-primary group-hover:w-8 transition-all duration-500 rounded-full" />
-              </div>
-            </Link>
-          ))}
-        </div>
-      </div>
-    </section>
+    <span
+      className={[
+        "inline-flex w-fit items-center gap-2 rounded-full px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.28em]",
+        inverse
+          ? "border border-white/15 bg-white/10 text-white"
+          : "border border-primary/15 bg-white/80 text-primary",
+      ].join(" ")}
+    >
+      <span className={inverse ? "h-2 w-2 rounded-full bg-white" : "h-2 w-2 rounded-full bg-primary"} />
+      {children}
+    </span>
   );
-};
+}
+
+function SectionHeading({
+  eyebrow,
+  title,
+  description,
+  inverse = false,
+}: {
+  eyebrow: string;
+  title: ReactNode;
+  description: string;
+  inverse?: boolean;
+}) {
+  return (
+    <div className="max-w-2xl space-y-4">
+      <Eyebrow inverse={inverse}>{eyebrow}</Eyebrow>
+      <h2
+        className={[
+          "text-3xl font-semibold leading-tight tracking-[-0.05em] sm:text-4xl lg:text-5xl",
+          inverse ? "text-white" : "text-foreground",
+        ].join(" ")}
+      >
+        {title}
+      </h2>
+      <p className={inverse ? "text-sm leading-7 text-white/72 sm:text-base" : "text-sm leading-7 text-muted sm:text-base"}>
+        {description}
+      </p>
+    </div>
+  );
+}
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Professional Image Banners - Flush with Header (Blue Tokai Standard) */}
-      <ImageBannerSlider />
+    <div className="relative overflow-hidden bg-background">
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute inset-x-0 top-0 h-[720px] bg-[radial-gradient(circle_at_top_left,_rgba(178,124,78,0.24),_transparent_42%),linear-gradient(180deg,_#f7efe7_0%,_#fdfbf8_58%,_#fffdfa_100%)]" />
+        <div className="absolute inset-0 aurora-grid opacity-35" />
+        <div className="absolute left-[8%] top-24 h-56 w-56 rounded-full bg-primary/12 blur-[100px]" />
+        <div className="absolute right-[8%] top-28 h-64 w-64 rounded-full bg-coffee-light blur-[110px]" />
+      </div>
 
-      {/* Round Menu Categories */}
-      <CategoryMenu />
-
-      {/* Scroll Indicator */}
-      <ScrollAnimation animationType="bounce" className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center text-muted">
-         {/* Could put an icon here if needed */}
-      </ScrollAnimation>
-
-      {/* New Arrivals Section */}
-      <section id="arrivals" className="py-10 lg:py-16 px-6 md:px-12 bg-coffee-light/30 relative z-20">
-        <div className="container mx-auto">
-          <div className="flex flex-col md:flex-row items-center justify-between mb-16 gap-6">
-            <ScrollAnimation animationType="fade-right" viewportMargin="-100px">
-              <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">New <span className="gradient-text italic">Arrivals</span></h2>
-              <p className="text-muted max-w-xl">Fresh off the harvest. Discover our latest limited-edition micro-lots and seasonal blends.</p>
-            </ScrollAnimation>
-
-            <ScrollAnimation animationType="fade-left" viewportMargin="-100px">
-              <Link href="/shop" className="group flex items-center gap-2 text-primary font-bold hover:text-foreground transition-colors">
-                View All Products <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
-              </Link>
-            </ScrollAnimation>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {NEW_ARRIVALS.map((product, index) => (
-              <ScrollAnimation
-                key={product.id}
-                delay={index * 0.1}
-                className="group cursor-pointer"
-              >
-                <Link href={`/shop/${product.id}`} className="block h-full">
-                  <div className="h-64 bg-coffee-medium/10 relative flex items-center justify-center overflow-hidden rounded-sm">
-                    <Image
-                      src={product.img}
-                      alt={product.name}
-                      fill
-                      unoptimized
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      className="object-cover transition-transform duration-700 group-hover:scale-110 z-0"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent z-10" />
-                    {/* Dynamic glow based on category */}
-                    <div className={cn(
-                      "absolute inset-0 opacity-10 group-hover:opacity-30 transition-opacity duration-500",
-                      product.category === "Coffee" ? "bg-[#8B5A2B]" : product.category === "Tea" ? "bg-[#4CAF50]" : "bg-[#FF9800]"
-                    )} />
-                    <div className="absolute top-4 left-4 z-20 bg-background/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] uppercase font-bold text-primary border border-primary/20">
-                      {product.category}
-                    </div>
-                  </div>
-                  <div className="p-6">
-                    <div className="flex justify-between items-start mb-2">
-                      <h3 className="text-xl font-bold group-hover:text-primary transition-colors text-foreground">{product.name}</h3>
-                      <span className="font-bold text-lg text-primary">{product.price}</span>
-                    </div>
-                    <p className="text-sm text-muted mb-4 line-clamp-2">{product.notes}</p>
-                    <div className="flex items-center justify-between mt-6 pt-4 border-t border-black/5">
-                      <div className="flex items-center gap-1.5">
-                        <Star className="w-4 h-4 fill-primary text-primary" />
-                        <span className="text-sm font-bold">{product.rating}</span>
-                      </div>
-                      <span className="text-sm font-bold text-foreground group-hover:text-primary transition-colors flex items-center gap-1">
-                        View Details <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                      </span>
-                    </div>
-                  </div>
-                </Link>
-              </ScrollAnimation>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Shop by Category Section */}
-      <section id="categories" className="py-10 lg:py-16 px-6 md:px-12 bg-background relative z-20 overflow-hidden">
-        {/* Abstract Background Elements */}
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[100px] -z-10" />
-        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-coffee-medium/5 rounded-full blur-[120px] -z-10" />
-
-        <div className="container mx-auto">
-          <ScrollAnimation
-            viewportMargin="-100px"
-            className="text-center mb-20 relative"
-          >
-            {/* Abundant Decorative Small Cups */}
-            <FloatingCups />
-
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground relative z-10">Test The <span className="gradient-text italic">Magic</span></h2>
-            <p className="text-muted max-w-2xl mx-auto relative z-10">Beyond exceptional coffee, discover our curated selection of rare teas, artisanal dry fruits, and ethically sourced spices.</p>
-          </ScrollAnimation>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              {
-                id: "Coffee",
-                title: "Artisan Coffee",
-                desc: "Single-origin beans and masterful blends roasted to perfection.",
-                icon: Coffee,
-                img: "/categories/coffee.png",
-                bgClass: "from-[#8B5A2B]/20 to-black",
-                delay: 0
-              },
-              {
-                id: "Tea",
-                title: "Rare Teas",
-                desc: "Hand-rolled oolongs, ceremonial matcha, and delicate white teas.",
-                icon: Leaf,
-                img: "/categories/tea.png",
-                bgClass: "from-[#4CAF50]/20 to-black",
-                delay: 0.2
-              },
-              {
-                id: "Spices",
-                title: "Exotic Spices",
-                desc: "Kashmiri Saffron, True Ceylon Cinnamon, and Tellicherry Black Pepper.",
-                icon: Star,
-                img: "/categories/spices.png",
-                bgClass: "from-[#FF9800]/20 to-black",
-                delay: 0.4
-              },
-              {
-                id: "Dryfruit",
-                title: "Premium Dry Fruits",
-                desc: "Jumbo Medjool Dates, Afghan Pistachios, and Turkish Figs.",
-                icon: Package,
-                img: "/categories/dryfruit.png",
-                bgClass: "from-[#9C27B0]/20 to-black",
-                delay: 0.6
-              }
-            ].map((category) => (
-              <ScrollAnimation
-                key={category.id}
-                delay={category.delay}
-                className="group relative"
-              >
-                <Link href={`/shop?category=${category.id}`} className="block h-full">
-                  <div className={cn(
-                    "h-full p-8 rounded-3xl glass border border-white/5 relative overflow-hidden flex flex-col items-start text-left transition-all duration-500",
-                    "hover:shadow-[0_0_40px_rgba(178,124,78,0.05)] hover:border-black/10"
-                  )}>
-                    {/* Background Image */}
-                    <div className="absolute inset-0 z-0">
-                      <Image
-                        src={category.img}
-                        alt={category.title}
-                        fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                        className="object-cover opacity-10 group-hover:opacity-20 transition-opacity duration-500"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/60" />
-                    </div>
-
-                    {/* Content */}
-                    <div className="relative z-10 w-full">
-                      <div className="w-14 h-14 rounded-2xl bg-black/5 flex items-center justify-center mb-6 group-hover:bg-primary/10 transition-colors border border-black/5 group-hover:border-primary/30 group-hover:scale-110 duration-500">
-                        <category.icon className="w-6 h-6 text-primary transition-colors" />
-                      </div>
-                      <h3 className="text-2xl font-bold mb-3 group-hover:text-primary transition-colors text-foreground">{category.title}</h3>
-                      <p className="text-muted text-sm leading-relaxed mb-8 group-hover:text-foreground transition-colors">{category.desc}</p>
-
-                      <div className="mt-auto flex items-center text-sm font-bold text-primary transition-colors gap-2">
-                        Explore <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform duration-300" />
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              </ScrollAnimation>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Promotional Banner Section */}
-      <section id="story" className="py-10 lg:py-16 px-6 md:px-12 relative z-20">
-        <div className="container mx-auto">
-          <ScrollAnimation
-            animationType="scale-up"
-            className="rounded-[2.5rem] overflow-hidden relative glass border-primary/10 bg-gradient-to-r from-coffee-light/50 to-white shadow-xl shadow-primary/5"
-          >
-            {/* Wavy/Futuristic Abstract Pattern Background */}
-            <div className="absolute inset-0 opacity-20">
-              <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-                <path d="M0,50 Q25,20 50,50 T100,50 L100,100 L0,100 Z" fill="url(#grad1)" />
-                <path d="M0,70 Q25,40 50,70 T100,70 L100,100 L0,100 Z" fill="url(#grad2)" opacity="0.5" />
-                <defs>
-                  <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stopColor="#C69C6D" stopOpacity="0.5" />
-                    <stop offset="100%" stopColor="#F5EBE1" stopOpacity="0" />
-                  </linearGradient>
-                  <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stopColor="#C69C6D" stopOpacity="1" />
-                    <stop offset="100%" stopColor="transparent" stopOpacity="0" />
-                  </linearGradient>
-                </defs>
-              </svg>
+      <section id="hero" className="scroll-mt-28 px-5 pb-14 pt-8 sm:px-6 md:px-10 md:pb-20 lg:px-16 lg:pt-12">
+        <div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-[1.08fr_0.92fr] lg:items-center">
+          <ScrollAnimation className="space-y-7">
+            <Eyebrow>2030 Coffee Interface</Eyebrow>
+            <div className="space-y-5">
+              <h1 className="max-w-4xl text-4xl font-semibold leading-[0.92] tracking-[-0.07em] text-foreground sm:text-5xl md:text-6xl lg:text-[6rem]">
+                A homepage that feels
+                <span className="gradient-text"> premium, clear, and future-ready</span>.
+              </h1>
+              <p className="max-w-2xl text-sm leading-7 text-muted sm:text-base md:text-lg md:leading-8">
+                The landing page is now rebuilt as one clean system. Better spacing,
+                stronger hierarchy, consistent cards, and smoother responsive stacking
+                make the website feel designed by an experienced team.
+              </p>
             </div>
 
-            <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-12 p-8 md:p-16">
-              <div className="w-full lg:w-1/2 space-y-8">
-                <h3 className="text-3xl md:text-5xl font-bold text-foreground leading-tight">
-                  Press your way to a rich, <span className="gradient-text italic">flavourful</span>, & full-bodied brew!
-                </h3>
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <Link
+                href="/shop"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-foreground px-6 py-4 text-sm font-semibold uppercase tracking-[0.22em] text-white transition-colors hover:bg-primary"
+              >
+                Shop Collection
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link
+                href="/#arrivals"
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-black/10 bg-white/80 px-6 py-4 text-sm font-semibold uppercase tracking-[0.22em] text-foreground transition-colors hover:border-primary/25 hover:text-primary"
+              >
+                New Arrivals
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
 
-                <div className="flex flex-wrap items-center gap-4 text-xs font-bold tracking-widest text-primary uppercase">
-                  <span>EASY-TO-USE</span>
-                  <span className="w-1 h-1 rounded-full bg-white/20" />
-                  <span>TRAVEL-FRIENDLY</span>
-                  <span className="w-1 h-1 rounded-full bg-white/20" />
-                  <span>VERSATILE</span>
-                </div>
-
-                <div className="glass px-6 py-4 rounded-xl border border-primary/10 bg-white/40 inline-block">
-                  <p className="text-foreground text-sm md:text-base font-medium">
-                    ENJOY FLAT <span className="text-primary font-bold">50% OFF</span> ON A BRAND-NEW FRENCH PRESS<br />WHEN YOU ORDER ROASTED COFFEE.
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+              {HERO_STATS.map((stat) => (
+                <div key={stat.label} className="panel-border rounded-[1.5rem] bg-white/78 p-5 backdrop-blur-xl">
+                  <p className="text-3xl font-semibold tracking-[-0.05em] text-foreground">
+                    {stat.value}
+                  </p>
+                  <p className="mt-2 text-xs uppercase tracking-[0.18em] text-muted">
+                    {stat.label}
                   </p>
                 </div>
+              ))}
+            </div>
+          </ScrollAnimation>
 
-                <button className="bg-primary text-white px-10 py-4 rounded-xl font-bold hover:bg-foreground hover:text-white transition-all duration-300 shadow-[0_0_30px_rgba(178,124,78,0.3)] hover:shadow-[0_0_50px_rgba(0,0,0,0.1)] uppercase tracking-wide">
-                  Buy Now
-                </button>
-              </div>
+          <ScrollAnimation animationType="scale-up">
+            <div className="panel-border relative overflow-hidden rounded-[2rem] bg-white/78 p-3 backdrop-blur-xl sm:p-4">
+              <div className="grid gap-4 lg:grid-cols-[1fr_0.8fr]">
+                <div className="relative min-h-[380px] overflow-hidden rounded-[1.6rem] bg-[#1f1410] p-6 text-white sm:min-h-[440px]">
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.15),_transparent_30%),linear-gradient(145deg,_rgba(178,124,78,0.56),_rgba(17,11,9,0.96)_68%)]" />
+                  <div className="relative z-10 flex h-full flex-col justify-between">
+                    <div className="space-y-4">
+                      <Eyebrow inverse>Featured Capsule</Eyebrow>
+                      <h2 className="max-w-sm text-3xl font-semibold leading-tight tracking-[-0.04em] sm:text-4xl">
+                        Kenya AA leads the new luxury shelf.
+                      </h2>
+                      <p className="max-w-sm text-sm leading-7 text-white/72">
+                        The hero now uses one strong product story instead of multiple
+                        mismatched blocks competing for attention.
+                      </p>
+                    </div>
 
-              <div className="w-full lg:w-1/2 relative h-[300px] md:h-[400px] rounded-2xl overflow-hidden glass border-black/5 flex items-center justify-center group">
-                <div className="absolute inset-0">
-                  <Image
-                    src="/promo/french-press.png"
-                    alt="French Press"
-                    fill
-                    className="object-cover opacity-60 group-hover:scale-105 transition-transform duration-700"
-                  />
+                    <div className="relative mx-auto mt-8 h-56 w-full max-w-[320px] sm:h-72">
+                      <Image
+                        src="/products/kenya-aa.png"
+                        alt="Kenya AA Single Origin"
+                        fill
+                        priority
+                        sizes="(max-width: 1024px) 100vw, 35vw"
+                        className="object-contain drop-shadow-[0_28px_40px_rgba(0,0,0,0.45)]"
+                      />
+                    </div>
+                  </div>
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-tr from-black/80 to-transparent" />
-                {/* Stylized French Press Representation Backup */}
-                <Coffee className="w-32 h-32 md:w-48 md:h-48 text-primary opacity-80 animate-pulse-slow relative z-10" />
-                <div className="absolute inset-0 flex items-center justify-center mix-blend-overlay">
-                  <div className="w-64 h-64 border border-black/5 rounded-full animate-[spin_20s_linear_infinite]" />
+
+                <div className="grid gap-4">
+                  <div className="panel-border rounded-[1.4rem] bg-[#fbf6f0] p-5">
+                    <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">
+                      Experience
+                    </p>
+                    <div className="mt-4 space-y-4">
+                      {[
+                        {
+                          icon: Zap,
+                          title: "Sharper hierarchy",
+                          text: "Hero, cards, and sections now follow one readable structure.",
+                        },
+                        {
+                          icon: Waves,
+                          title: "Responsive spacing",
+                          text: "Cards stack better on mobile and align more naturally on larger screens.",
+                        },
+                        {
+                          icon: Star,
+                          title: "Premium consistency",
+                          text: "One visual language is used across every homepage section.",
+                        },
+                      ].map((item) => (
+                        <div key={item.title} className="rounded-[1.2rem] border border-black/5 bg-white p-4">
+                          <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                            <item.icon className="h-5 w-5" />
+                          </div>
+                          <h3 className="text-lg font-semibold tracking-[-0.03em] text-foreground">
+                            {item.title}
+                          </h3>
+                          <p className="mt-2 text-sm leading-6 text-muted">{item.text}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -330,108 +259,182 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Preparation Guides Section */}
-      <section id="brew" className="py-10 lg:py-16 relative overflow-hidden bg-white">
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-30" />
-        <div className="container mx-auto px-6 md:px-12 relative z-10">
-          <div className="flex flex-col lg:flex-row items-center gap-16">
-            <ScrollAnimation
-              animationType="fade-right"
-              className="w-full lg:w-1/2 space-y-6"
+      <section id="categories" className="scroll-mt-28 px-5 py-14 sm:px-6 md:px-10 md:py-20 lg:px-16">
+        <div className="mx-auto max-w-7xl">
+          <ScrollAnimation className="mb-10 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <SectionHeading
+              eyebrow="Categories"
+              title={
+                <>
+                  One clean design system for every
+                  <span className="gradient-text"> product category</span>.
+                </>
+              }
+              description="The homepage now transitions naturally from hero to category discovery. Each card uses the same structure, spacing, and responsive behavior."
+            />
+            <Link
+              href="/shop"
+              className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.2em] text-foreground transition-colors hover:text-primary"
             >
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/10 text-primary font-medium text-sm mb-4">
-                <Coffee className="w-4 h-4" /> Brew Like a Pro
-              </div>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-foreground">
-                Master the <span className="gradient-text italic">Craft</span>
-              </h2>
-              <p className="text-lg text-muted leading-relaxed">
-                Unlock the full potential of your beans, leaves, and spices. Our interactive guides walk you through precise measurements, timings, and techniques for the perfect extraction every time.
-              </p>
+              Browse all
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </ScrollAnimation>
 
-              <div className="pt-8 space-y-4">
-                {[
-                  { title: "Pour Over (V60)", time: "3:00 Min", difficulty: "Medium", icon: Coffee },
-                  { title: "Traditional Matcha", time: "1:30 Min", difficulty: "Hard", icon: Leaf },
-                  { title: "Golden Saffron Milk", time: "5:00 Min", difficulty: "Easy", icon: Star }
-                ].map((guide, i) => (
-                  <ScrollAnimation
-                    key={i}
-                    delay={0.2 + (i * 0.1)}
-                    className="glass p-4 rounded-xl flex items-center justify-between cursor-pointer group hover:border-primary/30 transition-all border border-black/5"
-                  >
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-lg bg-white flex items-center justify-center group-hover:bg-primary/20 transition-colors shadow-sm">
-                        <guide.icon className="w-6 h-6 text-primary" />
-                      </div>
-                      <div>
-                        <h4 className="font-bold text-lg text-foreground group-hover:text-primary transition-colors">{guide.title}</h4>
-                        <div className="flex items-center gap-3 text-xs text-muted font-medium mt-1">
-                          <span>⏱️ {guide.time}</span>
-                          <span className="w-1 h-1 rounded-full bg-white/20" />
-                          <span>Level: {guide.difficulty}</span>
-                        </div>
-                      </div>
+          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            {CATEGORIES.map((category, index) => (
+              <ScrollAnimation key={category.name} delay={index * 0.08}>
+                <Link href={category.href} className="group block h-full">
+                  <article className="panel-border relative flex min-h-[340px] h-full flex-col justify-between overflow-hidden rounded-[1.8rem] bg-white/80 p-5 transition-transform duration-300 group-hover:-translate-y-1 sm:min-h-[380px]">
+                    <div className="absolute inset-0">
+                      <Image
+                        src={category.image}
+                        alt={category.name}
+                        fill
+                        sizes="(max-width: 1280px) 50vw, 25vw"
+                        className="object-cover opacity-18 transition-transform duration-700 group-hover:scale-110"
+                      />
+                      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.1),rgba(253,251,248,0.96)_60%,#fdfbf8_100%)]" />
                     </div>
-                    <ArrowRight className="w-5 h-5 text-muted group-hover:text-primary transition-colors" />
-                  </ScrollAnimation>
-                ))}
-              </div>
-            </ScrollAnimation>
 
-            <ScrollAnimation
-              animationType="scale-up"
-              className="w-full lg:w-1/2 relative h-[500px]"
-            >
-              <div className="absolute inset-0 rounded-3xl overflow-hidden glass border-primary/20 shadow-xl shadow-primary/5 flex items-center justify-center">
-                <div className="absolute inset-0 bg-gradient-to-tr from-coffee-dark/80 to-primary/10 animate-pulse-slow" />
+                    <div className="relative z-10 flex h-12 w-12 items-center justify-center rounded-2xl bg-foreground text-white transition-colors group-hover:bg-primary">
+                      <category.icon className="h-5 w-5" />
+                    </div>
 
-                {/* Aesthetic Coffee Video - Defer loading using our wrapper */}
-                <DeferredVideo poster="/videos/brewing-poster.png" src="/videos/brewing-ritual.mp4" />
-
-                {/* Subtle Overlays for Depth */}
-                <div className="absolute inset-0 bg-gradient-to-t from-coffee-dark/40 to-transparent z-10" />
-                <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent z-10" />
-
-                {/* Decorative Elements */}
-                <div className="relative z-20 flex flex-col items-center justify-center p-8 text-center">
-                  <div className="w-20 h-20 rounded-full border border-white/20 flex items-center justify-center backdrop-blur-md bg-white/5 mb-4 animate-[bounce_4s_infinite]">
-                    <Coffee className="w-8 h-8 text-primary shadow-glow" />
-                  </div>
-                  <p className="text-white font-bold tracking-widest uppercase text-xs">Aura Brewing Ritual</p>
-                </div>
-              </div>
-            </ScrollAnimation>
+                    <div className="relative z-10 space-y-3">
+                      <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-primary">
+                        {category.name}
+                      </p>
+                      <h3 className="text-2xl font-semibold tracking-[-0.04em] text-foreground">
+                        {category.name} Collection
+                      </h3>
+                      <p className="text-sm leading-7 text-muted">{category.description}</p>
+                    </div>
+                  </article>
+                </Link>
+              </ScrollAnimation>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Subscription Banner */}
-      <section id="club" className="py-10 lg:py-16 px-6 md:px-12 relative z-20">
-        <div className="container mx-auto">
-          <ScrollAnimation
-            className="rounded-3xl overflow-hidden relative"
-          >
-            <div className="absolute inset-0 bg-gradient-to-r from-primary to-coffee-medium z-0" />
-            <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20 z-0" />
+      <section id="arrivals" className="scroll-mt-28 px-5 py-14 sm:px-6 md:px-10 md:py-20 lg:px-16">
+        <div className="mx-auto max-w-7xl">
+          <ScrollAnimation className="mb-10">
+            <SectionHeading
+              eyebrow="New Arrivals"
+              title={
+                <>
+                  Product cards that feel more
+                  <span className="gradient-text"> premium and balanced</span>.
+                </>
+              }
+              description="The arrivals section now uses one card style with consistent image framing, content spacing, and hover behavior across screen sizes."
+            />
+          </ScrollAnimation>
 
-            <div className="relative z-10 p-10 md:p-16 flex flex-col md:flex-row items-center justify-between gap-10">
-              <div className="max-w-2xl">
-                <h3 className="text-3xl md:text-5xl font-bold mb-4 text-foreground">Never Run Out of <span className="italic">Magic</span></h3>
-                <p className="text-foreground/80 text-lg mb-8">
-                  Join the Aura Club. Get freshly roasted beans delivered to your door every month. Save 15% and unlock exclusive micro-lots.
-                </p>
-                <button className="bg-white text-primary px-8 py-4 rounded-xl font-bold hover:bg-white/90 transition-colors shadow-2xl flex items-center gap-2 group">
-                  Start Subscription <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </button>
-              </div>
+          <div className="grid gap-5 lg:grid-cols-3">
+            {ARRIVALS.map((item, index) => (
+              <ScrollAnimation key={item.id} delay={index * 0.08}>
+                <Link href={`/shop/${item.id}`} className="group block h-full">
+                  <article className="panel-border flex h-full flex-col overflow-hidden rounded-[1.9rem] bg-white/84 backdrop-blur-xl transition-transform duration-300 group-hover:-translate-y-1">
+                    <div className="relative h-72 overflow-hidden bg-[radial-gradient(circle_at_top,_rgba(178,124,78,0.16),_transparent_35%),linear-gradient(180deg,_rgba(245,235,225,0.84),_rgba(255,255,255,0.96))] sm:h-80">
+                      <div className="absolute left-4 top-4 z-10 rounded-full border border-primary/15 bg-white/90 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-primary">
+                        {item.category}
+                      </div>
+                      <Image
+                        src={item.image}
+                        alt={item.name}
+                        fill
+                        unoptimized
+                        sizes="(max-width: 1024px) 100vw, 33vw"
+                        className="object-cover transition-transform duration-700 group-hover:scale-[1.06]"
+                      />
+                    </div>
+                    <div className="flex flex-1 flex-col p-5 sm:p-6">
+                      <div className="flex items-start justify-between gap-4">
+                        <h3 className="text-xl font-semibold tracking-[-0.04em] text-foreground sm:text-2xl">
+                          {item.name}
+                        </h3>
+                        <span className="text-base font-semibold text-primary sm:text-lg">
+                          {item.price}
+                        </span>
+                      </div>
+                      <p className="mt-3 text-sm leading-7 text-muted">{item.note}</p>
+                      <div className="mt-auto flex items-center justify-between border-t border-black/5 pt-5">
+                        <div className="flex items-center gap-2 text-sm font-medium text-foreground">
+                          <Star className="h-4 w-4 fill-primary text-primary" />
+                          4.9 rating
+                        </div>
+                        <span className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.18em] text-foreground transition-colors group-hover:text-primary">
+                          Details
+                          <ArrowRight className="h-4 w-4" />
+                        </span>
+                      </div>
+                    </div>
+                  </article>
+                </Link>
+              </ScrollAnimation>
+            ))}
+          </div>
+        </div>
+      </section>
 
-              <div className="w-48 h-48 md:w-64 md:h-64 shrink-0 relative">
-                <div className="absolute inset-0 bg-white/10 rounded-full animate-pulse blur-xl" />
-                <div className="absolute inset-4 border-2 border-dashed border-white/30 rounded-full animate-[spin_20s_linear_infinite]" />
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-foreground">
-                  <span className="text-5xl font-bold">15%</span>
-                  <span className="text-xl mt-1 font-bold">OFF</span>
+      <section id="story" className="scroll-mt-28 px-5 py-14 sm:px-6 md:px-10 md:py-20 lg:px-16">
+        <div className="mx-auto grid max-w-7xl gap-5 lg:grid-cols-[0.95fr_1.05fr]">
+          <ScrollAnimation className="panel-border rounded-[2rem] bg-[#201511] p-6 text-white sm:p-8 md:p-10">
+            <SectionHeading
+              eyebrow="Story Block"
+              inverse
+              title={
+                <>
+                  A stronger campaign section with a
+                  <span className="text-primary"> single visual direction</span>.
+                </>
+              }
+              description="Instead of unrelated styles, this block now connects product storytelling, promo offer, and premium atmosphere in one section."
+            />
+
+            <div className="mt-8 space-y-4">
+              {[
+                "Luxury dark surface for contrast against the light homepage",
+                "Focused promo message without extra clutter",
+                "Works cleanly on mobile and desktop without breaking the layout",
+              ].map((point) => (
+                <div key={point} className="rounded-[1.25rem] border border-white/10 bg-white/[0.06] px-4 py-4 text-sm leading-7 text-white/75">
+                  {point}
+                </div>
+              ))}
+            </div>
+
+            <Link
+              href="/shop"
+              className="mt-8 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-4 text-sm font-semibold uppercase tracking-[0.2em] text-white transition-colors hover:bg-white hover:text-foreground"
+            >
+              Shop offer
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </ScrollAnimation>
+
+          <ScrollAnimation animationType="scale-up">
+            <div className="panel-border overflow-hidden rounded-[2rem] bg-white/78 p-3 backdrop-blur-xl sm:p-4">
+              <div className="relative h-[420px] overflow-hidden rounded-[1.6rem] bg-foreground sm:h-[520px]">
+                <DeferredVideo poster="/videos/brewing-poster.png" src="/videos/brewing-ritual.mp4" />
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(17,12,10,0.08),rgba(17,12,10,0.76))]" />
+
+                <div className="absolute left-4 top-4 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-white backdrop-blur-xl">
+                  Ritual In Motion
+                </div>
+
+                <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-7">
+                  <div className="rounded-[1.4rem] border border-white/10 bg-black/20 p-5 backdrop-blur-md">
+                    <p className="text-xs uppercase tracking-[0.22em] text-white/55">
+                      Launch offer
+                    </p>
+                    <h3 className="mt-3 max-w-xl text-2xl font-semibold tracking-[-0.04em] text-white sm:text-3xl">
+                      Flat 50% off on French press when you order roasted coffee.
+                    </h3>
+                  </div>
                 </div>
               </div>
             </div>
@@ -439,24 +442,95 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Reviews Section */}
-      <section className="py-10 lg:py-16 relative overflow-hidden bg-coffee-light/15">
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20" />
+      <section id="brew" className="scroll-mt-28 px-5 py-14 sm:px-6 md:px-10 md:py-20 lg:px-16">
+        <div className="mx-auto grid max-w-7xl gap-5 lg:grid-cols-[1fr_0.78fr]">
+          <ScrollAnimation className="panel-border rounded-[2rem] bg-white/80 p-6 backdrop-blur-xl sm:p-8 md:p-10">
+            <SectionHeading
+              eyebrow="Brew Guides"
+              title={
+                <>
+                  Useful content that keeps the design
+                  <span className="gradient-text"> elegant and credible</span>.
+                </>
+              }
+              description="Premium UI is not only visual effects. It also needs clean information architecture and easier scanning on smaller screens."
+            />
 
-        <div className="container mx-auto px-6 md:px-12 relative z-10 flex flex-col items-center">
-          <ScrollAnimation
-            animationType="scale-up"
-            className="glass rounded-3xl p-10 md:p-16 max-w-4xl w-full text-center border-primary/20 bg-white/40"
-          >
-            <div className="flex justify-center gap-2 mb-6">
-              {[1, 2, 3, 4, 5].map(i => <Star key={i} className="w-6 h-6 fill-primary text-primary" />)}
+            <div className="mt-8 grid gap-4">
+              {BREW_GUIDES.map((guide, index) => (
+                <ScrollAnimation key={guide.title} delay={index * 0.08}>
+                  <div className="flex flex-col gap-3 rounded-[1.3rem] border border-black/6 bg-[#fcfaf7] px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                      <h3 className="text-lg font-semibold tracking-[-0.03em] text-foreground">
+                        {guide.title}
+                      </h3>
+                      <p className="mt-1 text-sm text-muted">{guide.meta}</p>
+                    </div>
+                    <span className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.18em] text-primary">
+                      Explore
+                      <ArrowRight className="h-4 w-4" />
+                    </span>
+                  </div>
+                </ScrollAnimation>
+              ))}
             </div>
-            <h3 className="text-2xl md:text-4xl font-medium leading-relaxed mb-8 italic text-foreground">
-              &quot;Aura Coffee didn&apos;t just meet my expectations; they redefined what I thought coffee could taste like. The shipping was fast, the unboxing experience was premium, and the taste is truly next-level.&quot;
-            </h3>
-            <div>
-              <p className="text-primary font-bold text-lg">Eleanor V.</p>
-              <p className="text-muted text-sm">Verified Buyer</p>
+          </ScrollAnimation>
+
+          <ScrollAnimation animationType="fade-left" className="grid gap-5">
+            <div className="panel-border rounded-[2rem] bg-foreground p-6 text-white sm:p-8">
+              <p className="text-xs uppercase tracking-[0.24em] text-white/55">Design result</p>
+              <p className="mt-4 text-5xl font-semibold tracking-[-0.06em] text-primary">2030</p>
+              <p className="mt-3 text-sm leading-7 text-white/72">
+                Cleaner visual rhythm, fewer mismatched blocks, and better responsiveness
+                across the homepage.
+              </p>
+            </div>
+
+            <div className="panel-border rounded-[2rem] bg-[linear-gradient(135deg,#f6efe7,#ffffff)] p-6 sm:p-8">
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-primary">
+                Improvements
+              </p>
+              <ul className="mt-4 space-y-3 text-sm leading-7 text-muted">
+                <li>More consistent card shapes and spacing.</li>
+                <li>Better mobile stacking and readable text widths.</li>
+                <li>Cleaner section transitions from hero to conversion area.</li>
+              </ul>
+            </div>
+          </ScrollAnimation>
+        </div>
+      </section>
+
+      <section id="club" className="scroll-mt-28 px-5 pb-20 pt-14 sm:px-6 md:px-10 md:pt-20 lg:px-16">
+        <div className="mx-auto max-w-7xl">
+          <ScrollAnimation className="panel-border relative overflow-hidden rounded-[2.1rem] bg-foreground px-6 py-8 text-white sm:px-8 sm:py-10 md:px-12 md:py-12">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_right,_rgba(178,124,78,0.35),_transparent_28%),linear-gradient(135deg,#201511,#120c0a)]" />
+            <div className="relative z-10 grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
+              <SectionHeading
+                eyebrow="Aura Club"
+                inverse
+                title={
+                  <>
+                    Subscription now feels like a
+                    <span className="text-primary"> premium final CTA</span>.
+                  </>
+                }
+                description="This closing section is simpler and stronger, so the homepage ends with one clear offer instead of another mismatched layout."
+              />
+
+              <div className="rounded-[1.8rem] border border-white/10 bg-white/[0.08] p-6 text-center backdrop-blur-xl sm:p-8">
+                <p className="text-xs uppercase tracking-[0.24em] text-white/58">Member savings</p>
+                <p className="mt-3 text-5xl font-semibold tracking-[-0.06em] text-primary sm:text-6xl">
+                  15%
+                </p>
+                <p className="mt-2 text-sm uppercase tracking-[0.2em] text-white">Every month</p>
+                <Link
+                  href="/subscribe"
+                  className="mt-6 inline-flex items-center gap-2 rounded-full bg-white px-6 py-4 text-sm font-semibold uppercase tracking-[0.2em] text-foreground transition-colors hover:bg-primary hover:text-white"
+                >
+                  Start subscription
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
             </div>
           </ScrollAnimation>
         </div>

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ShoppingCart, Menu, X, User, Heart } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, type ComponentPropsWithoutRef, type MouseEvent } from "react";
 import { useCart } from "@/context/CartContext";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
@@ -29,34 +29,25 @@ export default function Navbar() {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
-    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    // Only handle internal anchors starting with /#
+  const scrollToSection = (e: MouseEvent<HTMLAnchorElement>, href: string) => {
     if (href.startsWith("/#")) {
       const targetId = href.replace("/#", "");
       const element = document.getElementById(targetId);
       
       if (element) {
         e.preventDefault();
-        
-        // Use a more controlled smooth scroll
-        const offset = 80; // Navbar height offset
-        const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
-        const offsetPosition = elementPosition - offset;
-
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: "smooth"
-        });
-        
-        if (isMobileMenuOpen) setIsMobileMenuOpen(false);
-
-        // Update URL hash without jumping
+        element.scrollIntoView({ behavior: "smooth", block: "start" });
         window.history.pushState(null, "", `#${targetId}`);
       }
+    }
+
+    if (isMobileMenuOpen) {
+      setIsMobileMenuOpen(false);
     }
   };
 
@@ -186,7 +177,7 @@ export default function Navbar() {
   );
 }
 
-function ArrowRight(props: any) {
+function ArrowRight(props: ComponentPropsWithoutRef<"svg">) {
   return (
     <svg
       {...props}
