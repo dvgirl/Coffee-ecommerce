@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { ReactNode } from "react";
 
 type AnimationProps = {
@@ -22,15 +22,19 @@ export default function ScrollAnimation({
   viewportMargin = "-50px",
   viewportAmount = 0.1,
 }: AnimationProps) {
-  
-  const variants = {
+  const shouldReduceMotion = useReducedMotion();
+
+  if (shouldReduceMotion) {
+    return <div className={className}>{children}</div>;
+  }
+
+  const variants: Variants = {
     hidden: {
       opacity: 0,
-       ...(animationType === "fade-up" && { y: 20 }),
-       ...(animationType === "fade-left" && { x: 50 }),
-       ...(animationType === "fade-right" && { x: -50 }),
-       ...(animationType === "bounce" && { y: [0, 10, 0] }),
-       ...(animationType === "scale-up" && { scale: 0.95 })
+      ...(animationType === "fade-up" && { y: 20 }),
+      ...(animationType === "fade-left" && { x: 50 }),
+      ...(animationType === "fade-right" && { x: -50 }),
+      ...(animationType === "scale-up" && { scale: 0.95 }),
     },
     visible: {
       opacity: 1,
@@ -40,16 +44,16 @@ export default function ScrollAnimation({
       transition: {
         duration,
         delay,
-        ease: "easeOut" as any
-      }
-    }
+        ease: "easeOut",
+      },
+    },
   };
 
   if (animationType === "bounce") {
     return (
       <motion.div
         animate={{ y: [0, 10, 0] }}
-        transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" as any }}
+        transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
         className={className}
       >
         {children}
@@ -62,7 +66,7 @@ export default function ScrollAnimation({
       variants={variants}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: viewportMargin as any, amount: viewportAmount as any }}
+      viewport={{ once: true, margin: viewportMargin, amount: viewportAmount }}
       className={className}
     >
       {children}
