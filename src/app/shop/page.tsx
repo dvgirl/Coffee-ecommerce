@@ -174,13 +174,13 @@ function ShopContent() {
         animate={{ opacity: 1, y: 0 }}
         className="mb-6"
       >
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-          <div>
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+          <div className="flex-1">
             <h1 className="text-4xl md:text-5xl font-serif font-bold mb-2">Our <span className="gradient-text italic">Collection</span></h1>
             <p className="text-muted text-sm max-w-xl">Artisan-roasted beans, sourced from the finest farms around the globe.</p>
           </div>
-          <div className="flex items-center gap-4">
-            <div className="relative group w-full md:w-72">
+          <div className="flex items-center gap-4 w-full lg:w-auto">
+            <div className="relative group w-full sm:w-96 lg:w-80">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted group-focus-within:text-primary transition-colors" />
               <input
                 type="text"
