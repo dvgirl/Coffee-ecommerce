@@ -10,7 +10,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
 type SortOption = "featured" | "best-selling" | "name-asc" | "name-desc" | "price-asc" | "price-desc" | "date-old" | "date-new";
-
+//add to git 
 // Custom hook for media query
 function useMediaQuery(query: string) {
   const [matches, setMatches] = useState(false);
@@ -469,8 +469,8 @@ function ShopContent() {
                     )}
 
                     {/* Image Section */}
-                    <Link 
-                      href={`/shop/${product.id}`} 
+                    <Link
+                      href={`/shop/${product.id}`}
                       className={cn(
                         "relative bg-black/5 flex items-center justify-center rounded-lg overflow-hidden shrink-0",
                         isDetailed ? "w-32 h-32 md:w-40 md:h-40" : "h-56 w-full"
@@ -481,7 +481,7 @@ function ShopContent() {
                         {product.category}
                       </div>
                     </Link>
-                    
+
                     {/* Content Section */}
                     <div className={cn(
                       "flex flex-col flex-grow",
@@ -500,22 +500,22 @@ function ShopContent() {
                           <div className="flex flex-col items-end">
                             <span className="font-bold text-primary">${displayPrice}</span>
                             <div className="flex items-center gap-1 text-[10px] font-bold text-secondary-foreground/60">
-                               <Star className="w-2.5 h-2.5 fill-primary text-primary" />
-                               <span>{product.rating}</span>
-                             </div>
+                              <Star className="w-2.5 h-2.5 fill-primary text-primary" />
+                              <span>{product.rating}</span>
+                            </div>
                           </div>
                         )}
                       </div>
 
                       {isDetailed && (
                         <div className="flex flex-col gap-1 mb-2">
-                           <div className="flex items-center gap-1.5 font-bold text-xs">
-                             <span className="text-secondary-foreground inline-flex items-center gap-0.5">${displayPrice}</span>
-                           </div>
-                           <div className="flex items-center gap-1 text-[10px] font-bold text-secondary-foreground/60">
-                             <Star className="w-3 h-3 fill-primary text-primary" />
-                             <span>{product.rating} (88)</span>
-                           </div>
+                          <div className="flex items-center gap-1.5 font-bold text-xs">
+                            <span className="text-secondary-foreground inline-flex items-center gap-0.5">${displayPrice}</span>
+                          </div>
+                          <div className="flex items-center gap-1 text-[10px] font-bold text-secondary-foreground/60">
+                            <Star className="w-3 h-3 fill-primary text-primary" />
+                            <span>{product.rating} (88)</span>
+                          </div>
                         </div>
                       )}
 
@@ -525,7 +525,7 @@ function ShopContent() {
                       )}>
                         {product.notes}
                       </p>
-                      
+
                       <div className={cn(
                         "flex flex-col gap-3 mt-auto",
                         isDetailed ? "pt-2" : "pt-4"
@@ -534,7 +534,7 @@ function ShopContent() {
                         <div className="flex items-center w-full bg-white border border-primary/20 rounded-xl overflow-hidden shadow-sm h-11">
                           {/* Quantity Selector Section */}
                           <div className="flex items-center h-full px-1">
-                            <button 
+                            <button
                               onClick={() => updateQuantity(product.id, -1)}
                               className="w-10 h-full flex items-center justify-center hover:bg-primary hover:text-white text-primary transition-all rounded-lg"
                               title="Decrease"
@@ -544,7 +544,7 @@ function ShopContent() {
                             <span className="w-10 text-center text-xs font-black text-primary">
                               {qty || 1}
                             </span>
-                            <button 
+                            <button
                               onClick={() => updateQuantity(product.id, 1)}
                               className="w-10 h-full flex items-center justify-center hover:bg-primary hover:text-white text-primary transition-all rounded-lg"
                               title="Increase"
@@ -570,8 +570,8 @@ function ShopContent() {
                             })}
                             className={cn(
                               "flex-grow h-full text-[10px] font-black uppercase tracking-widest transition-all",
-                              product.inStock 
-                                ? "text-primary hover:bg-primary hover:text-white" 
+                              product.inStock
+                                ? "text-primary hover:bg-primary hover:text-white"
                                 : "text-black/20 cursor-not-allowed bg-black/5"
                             )}
                           >
@@ -581,26 +581,26 @@ function ShopContent() {
 
                         {/* Buy Now / Quick Check Action - Refined */}
                         <Link
-                           href="/checkout"
-                           onClick={() => {
-                             addToCart({
-                               id: product.id,
-                               name: product.name,
-                               basePrice: product.basePrice,
-                               price: displayPrice,
-                               quantity: qty || 1,
-                               variant: currentVariantStr,
-                               image: ""
-                             });
-                           }}
-                           className={cn(
-                             "w-full py-3 rounded-xl text-[10px] font-black transition-all uppercase tracking-widest text-center shadow-md",
-                             product.inStock 
-                               ? "bg-primary text-white hover:bg-primary/90 hover:shadow-lg active:scale-[0.98]" 
-                               : "bg-black/10 text-black/40 cursor-not-allowed"
-                           )}
+                          href="/checkout"
+                          onClick={() => {
+                            addToCart({
+                              id: product.id,
+                              name: product.name,
+                              basePrice: product.basePrice,
+                              price: displayPrice,
+                              quantity: qty || 1,
+                              variant: currentVariantStr,
+                              image: ""
+                            });
+                          }}
+                          className={cn(
+                            "w-full py-3 rounded-xl text-[10px] font-black transition-all uppercase tracking-widest text-center shadow-md",
+                            product.inStock
+                              ? "bg-primary text-white hover:bg-primary/90 hover:shadow-lg active:scale-[0.98]"
+                              : "bg-black/10 text-black/40 cursor-not-allowed"
+                          )}
                         >
-                           Buy Now
+                          Buy Now
                         </Link>
                       </div>
                     </div>
