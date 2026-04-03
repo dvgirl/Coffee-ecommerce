@@ -168,30 +168,77 @@ function ShopContent() {
   ];
 
   return (
-    <div className="pt-12 pb-6 px-6 md:px-12 container mx-auto">
+    <div className="pt-8 md:pt-8 lg:pt-8 xl:pt-12 pb-4 md:pb-6 px-5 md:px-12 container mx-auto">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="mb-6"
+        transition={{ duration: 0.5 }}
+        className="mb-5 xl:mb-6"
       >
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
-          <div className="flex-1">
-            <h1 className="text-4xl md:text-5xl font-serif font-bold mb-2">Our <span className="gradient-text italic">Collection</span></h1>
-            <p className="text-muted text-sm max-w-xl">Artisan-roasted beans, sourced from the finest farms around the globe.</p>
+        {/* ── Mobile-first banner ── */}
+        <div className="flex flex-col items-center text-center lg:flex-row lg:items-end lg:text-left lg:justify-between gap-4 lg:gap-6">
+
+          <div className="flex-1 flex flex-col items-center lg:items-start">
+            {/* Premium accent badge */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2 }}
+              className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/8 px-4 py-1.5 mb-3 backdrop-blur-sm shadow-sm"
+            >
+              <Coffee className="h-3 w-3 text-primary shrink-0" />
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">
+                Artisan · Small Batch · Premium
+              </span>
+            </motion.div>
+
+            <h1 className="text-3xl md:text-4xl xl:text-5xl font-serif font-bold mb-2 xl:mb-2">
+              Our <span className="gradient-text italic">Collection</span>
+            </h1>
+            <p className="text-muted text-xs md:text-sm max-w-sm lg:max-w-xl">
+              Artisan-roasted beans, sourced from the finest farms around the globe.
+            </p>
+
+            {/* Quick-stat pills — mobile only */}
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.35 }}
+              className="flex items-center gap-2 mt-3 lg:hidden flex-wrap justify-center"
+            >
+              {[
+                { label: "Products", value: `${PRODUCTS.length}+` },
+                { label: "Countries", value: "12" },
+                { label: "Roasts", value: "4 Types" },
+              ].map((stat) => (
+                <div
+                  key={stat.label}
+                  className="flex items-center gap-1.5 rounded-full bg-black/5 border border-black/8 px-3 py-1"
+                >
+                  <span className="text-xs font-black text-foreground">{stat.value}</span>
+                  <span className="text-[10px] text-muted font-semibold">{stat.label}</span>
+                </div>
+              ))}
+            </motion.div>
           </div>
+
+          {/* Search bar – full width on mobile, constrained on desktop */}
           <div className="flex items-center gap-4 w-full lg:w-auto">
-            <div className="relative group w-full sm:w-96 lg:w-80">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted group-focus-within:text-primary transition-colors" />
+            <div className="relative group w-full sm:w-full lg:w-80">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted group-focus-within:text-primary transition-colors duration-200" />
               <input
                 type="text"
                 placeholder="Search our collection..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-black/5 border border-black/10 rounded-2xl py-3 pl-12 pr-4 text-sm text-foreground focus:outline-none focus:border-primary/40 focus:bg-white transition-all shadow-sm"
+                className="w-full bg-white border border-black/10 rounded-2xl py-3.5 pl-12 pr-4 text-sm text-foreground focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/10 transition-all shadow-[0_2px_16px_rgba(0,0,0,0.06)] hover:shadow-[0_4px_20px_rgba(0,0,0,0.1)]"
               />
             </div>
           </div>
         </div>
+
+        {/* Subtle divider */}
+        <div className="mt-5 h-px bg-gradient-to-r from-transparent via-black/8 to-transparent" />
       </motion.div>
 
       <div className="flex flex-col lg:flex-row gap-10 items-start">
@@ -402,7 +449,7 @@ function ShopContent() {
               <span className="hidden md:block text-xs font-bold text-muted uppercase tracking-wider">{processedProducts.length} Roasts</span>
             </div>
 
-            <div className="flex items-center gap-2 p-1 bg-black/5 rounded-xl overflow-hidden self-end md:self-auto">
+            <div className="hidden md:flex items-center gap-2 p-1 bg-black/5 rounded-xl overflow-hidden self-end md:self-auto">
               {gridIcons.map((item) => (
                 <button
                   key={item.cols}
@@ -456,7 +503,7 @@ function ShopContent() {
                     transition={{ duration: 0.2 }}
                     className={cn(
                       "bg-white rounded-xl overflow-hidden group border border-black/5 hover:border-black/10 transition-all",
-                      isDetailed ? "flex flex-row p-4 gap-4 md:gap-8 min-h-[160px]" : "flex flex-col h-full relative"
+                      isDetailed ? "flex flex-col md:flex-row p-4 md:p-4 gap-4 md:gap-8 min-h-[160px]" : "flex flex-col h-full relative"
                     )}
                   >
                     {!isDetailed && (
@@ -473,7 +520,7 @@ function ShopContent() {
                       href={`/shop/${product.id}`}
                       className={cn(
                         "relative bg-black/5 flex items-center justify-center rounded-lg overflow-hidden shrink-0",
-                        isDetailed ? "w-32 h-32 md:w-40 md:h-40" : "h-56 w-full"
+                        isDetailed ? "w-full h-64 md:w-40 md:h-40" : "h-56 w-full"
                       )}
                     >
                       <Coffee className="w-12 h-12 text-primary/20 group-hover:scale-110 transition-transform duration-500" />
@@ -531,30 +578,30 @@ function ShopContent() {
                         isDetailed ? "pt-2" : "pt-4"
                       )}>
                         {/* Unified Action Pill */}
-                        <div className="flex items-center w-full bg-white border border-primary/20 rounded-xl overflow-hidden shadow-sm h-11">
+                        <div className="flex items-center w-full bg-white border border-primary/20 rounded-xl overflow-hidden shadow-sm h-12 md:h-11">
                           {/* Quantity Selector Section */}
                           <div className="flex items-center h-full px-1">
                             <button
                               onClick={() => updateQuantity(product.id, -1)}
-                              className="w-10 h-full flex items-center justify-center hover:bg-primary hover:text-white text-primary transition-all rounded-lg"
+                              className="w-12 md:w-10 h-full flex items-center justify-center hover:bg-primary hover:text-white text-primary transition-all rounded-lg"
                               title="Decrease"
                             >
-                              <Minus className="w-4 h-4" />
+                              <Minus className="w-5 h-5 md:w-4 md:h-4" />
                             </button>
-                            <span className="w-10 text-center text-xs font-black text-primary">
+                            <span className="w-8 md:w-10 text-center text-sm md:text-xs font-black text-primary">
                               {qty || 1}
                             </span>
                             <button
                               onClick={() => updateQuantity(product.id, 1)}
-                              className="w-10 h-full flex items-center justify-center hover:bg-primary hover:text-white text-primary transition-all rounded-lg"
+                              className="w-12 md:w-10 h-full flex items-center justify-center hover:bg-primary hover:text-white text-primary transition-all rounded-lg"
                               title="Increase"
                             >
-                              <Plus className="w-4 h-4" />
+                              <Plus className="w-5 h-5 md:w-4 md:h-4" />
                             </button>
                           </div>
 
                           {/* Divider */}
-                          <div className="w-[1px] h-6 bg-primary/10" />
+                          <div className="w-[1px] h-8 md:h-6 bg-primary/10" />
 
                           {/* Add to Cart Section */}
                           <button
@@ -569,7 +616,7 @@ function ShopContent() {
                               image: ""
                             })}
                             className={cn(
-                              "flex-grow h-full text-[10px] font-black uppercase tracking-widest transition-all",
+                              "flex-grow h-full text-xs md:text-[10px] font-black uppercase tracking-widest transition-all",
                               product.inStock
                                 ? "text-primary hover:bg-primary hover:text-white"
                                 : "text-black/20 cursor-not-allowed bg-black/5"
@@ -594,7 +641,7 @@ function ShopContent() {
                             });
                           }}
                           className={cn(
-                            "w-full py-3 rounded-xl text-[10px] font-black transition-all uppercase tracking-widest text-center shadow-md",
+                            "w-full py-3.5 md:py-3 rounded-xl text-xs md:text-[10px] font-black transition-all uppercase tracking-widest text-center shadow-md",
                             product.inStock
                               ? "bg-primary text-white hover:bg-primary/90 hover:shadow-lg active:scale-[0.98]"
                               : "bg-black/10 text-black/40 cursor-not-allowed"

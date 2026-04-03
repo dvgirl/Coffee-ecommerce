@@ -12,7 +12,7 @@ import useWindowSize from "react-use/lib/useWindowSize";
 const STEPS = ["Shipping", "Payment", "Review"];
 
 export default function CheckoutPage() {
-  const { cart, cartTotal } = useAppContext();
+  const { cart, cartTotal, isCartReady } = useAppContext();
   const [currentStep, setCurrentStep] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -116,6 +116,16 @@ export default function CheckoutPage() {
       setTimeout(() => { setIsProcessing(false); setIsSuccess(true); }, 2000);
     }
   };
+
+  if (!isCartReady && !isSuccess) {
+    return (
+      <div className="pt-40 pb-24 px-6 container mx-auto min-h-screen flex flex-col items-center justify-center text-center">
+        <div className="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin mb-8" />
+        <h2 className="text-3xl font-serif font-bold mb-4 text-foreground">Loading checkout</h2>
+        <p className="text-muted max-w-md">Waiting for your saved cart items before checkout.</p>
+      </div>
+    );
+  }
 
   if (cart.length === 0 && !isSuccess) {
     return (
@@ -484,3 +494,4 @@ export default function CheckoutPage() {
     </div>
   );
 }
+

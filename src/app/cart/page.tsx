@@ -5,10 +5,9 @@ import { useCart, CartItem } from "@/context/CartContext";
 import { Trash2, Plus, Minus, ArrowRight, Coffee, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { PRODUCTS } from "@/lib/data";
-import { cn } from "@/lib/utils";
 
 export default function CartPage() {
-  const { cart, addToCart, removeFromCart, updateQuantity, cartTotal } = useCart();
+  const { cart, addToCart, removeFromCart, updateQuantity, cartTotal, isCartReady } = useCart();
 
   // Smart Upsell Logic
   const hasBeverage = cart.some(item => {
@@ -45,6 +44,18 @@ export default function CartPage() {
     addToCart(cartItem);
   };
 
+  if (!isCartReady) {
+    return (
+      <div className="min-h-screen pt-40 pb-24 flex items-center justify-center px-4">
+        <div className="glass w-full max-w-md rounded-[2.5rem] border border-black/5 bg-white/50 p-12 text-center shadow-xl">
+          <div className="mx-auto mb-6 h-12 w-12 rounded-full border-4 border-primary/20 border-t-primary animate-spin" />
+          <h2 className="text-2xl font-serif font-bold text-foreground">Loading your cart</h2>
+          <p className="mt-3 text-muted">Fetching your saved items...</p>
+        </div>
+      </div>
+    );
+  }
+
   if (cart.length === 0) {
     return (
       <div className="min-h-screen pt-40 pb-24 flex flex-col items-center justify-center text-center px-4">
@@ -57,7 +68,7 @@ export default function CartPage() {
             <Coffee className="w-10 h-10 text-primary" />
           </div>
           <h2 className="text-3xl font-serif font-bold mb-4 text-foreground">Your Cart is Empty</h2>
-          <p className="text-muted mb-8 leading-relaxed">Looks like you haven't added any premium roasts to your cart yet.</p>
+          <p className="text-muted mb-8 leading-relaxed">Looks like you haven&apos;t added any premium roasts to your cart yet.</p>
           <Link href="/shop" className="w-full bg-primary text-white px-8 py-4 rounded-xl font-bold hover:bg-foreground transition-all duration-300 shadow-[0_20px_40px_rgba(198,156,109,0.2)]">
             Start Shopping
           </Link>
@@ -211,3 +222,5 @@ export default function CartPage() {
     </div>
   );
 }
+
+

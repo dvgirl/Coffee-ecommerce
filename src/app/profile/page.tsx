@@ -1,9 +1,11 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { User, Package, Ticket, Settings, LogOut, ChevronRight, Clock, MapPin, CreditCard, Award, CheckCircle2, Truck, Leaf, Zap, Coffee } from "lucide-react";
-import { useState } from "react";
+import { User, Package, Ticket, Settings, LogOut, Clock, MapPin, CreditCard, Award, CheckCircle2, Leaf, Coffee } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import { clearSession, getStoredSession, type AuthUser } from "@/lib/auth";
 
 const ORDERS = [
   { id: "AURA-2024-089", date: "Today, 09:42 AM", status: "Roasting", total: "$56.00", items: "Midnight Onyx, Colombian Supremo", steps: ["Received", "Roasting", "Packaging", "Shipped", "Delivered"], currentStep: 1 },
@@ -67,6 +69,26 @@ const UserTasteRadar = () => {
 
 export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState("orders");
+  const [currentUser] = useState<AuthUser | null>(() => getStoredSession()?.user ?? null);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!getStoredSession()?.token) {
+      router.replace("/login");
+    }
+  }, [router]);
+
+  if (!currentUser) {
+    return (
+      <div className="container mx-auto min-h-screen px-6 pt-32 pb-24 md:px-12">
+        <div className="glass rounded-[2rem] border border-black/5 bg-white/60 p-10 text-center shadow-xl">
+          <p className="text-[11px] font-black uppercase tracking-[0.24em] text-primary">Preparing account</p>
+          <h1 className="mt-4 font-serif text-3xl font-bold text-foreground">Loading your profile...</h1>
+          <p className="mt-3 text-sm text-muted">You will be redirected to login if no session is found.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="pt-32 pb-24 px-6 md:px-12 container mx-auto min-h-screen">
@@ -85,8 +107,10 @@ export default function ProfilePage() {
              <div className="absolute inset-0 bg-black/10 rounded-[2.5rem]" />
              <User className="w-12 h-12 text-white relative z-10 -rotate-3" />
           </div>
-          <h1 className="text-3xl font-serif font-bold mb-2 text-foreground">Alex Mercer</h1>
-          <p className="text-muted text-[10px] font-bold tracking-[0.2em] uppercase mb-8">Established 2024</p>
+          <h1 className="text-3xl font-serif font-bold mb-2 text-foreground">{currentUser.name}</h1>
+          <p className="text-muted text-[10px] font-bold tracking-[0.2em] uppercase mb-8">
+            Verified {currentUser.phoneNumber}
+          </p>
           <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl border border-primary/20 bg-primary/5 text-primary font-bold text-xs tracking-wider shadow-inner">
             <Award className="w-4 h-4" /> Aura Elite Tier
           </div>
@@ -168,9 +192,15 @@ export default function ProfilePage() {
               </button>
             ))}
             <div className="h-px bg-black/5 my-4 mx-4" />
-            <button className="flex items-center gap-4 px-6 py-4 rounded-2xl text-red-500 font-bold text-sm tracking-wide hover:bg-red-50 transition-all text-left">
+            <button
+              onClick={() => {
+                clearSession({ resetGuestSession: true });
+                router.push("/login");
+              }}
+              className="flex items-center gap-4 px-6 py-4 rounded-2xl text-red-500 font-bold text-sm tracking-wide hover:bg-red-50 transition-all text-left"
+            >
               <LogOut className="w-5 h-5" />
-              Deactivate Session
+              Logout
             </button>
           </div>
         </motion.div>
@@ -184,7 +214,7 @@ export default function ProfilePage() {
           {activeTab === "orders" && (
             <div className="space-y-8">
               <h2 className="text-3xl font-serif font-bold mb-8 text-foreground">Active <span className="gradient-text italic">Shipments</span></h2>
-              {ORDERS.map((order, i) => (
+              {ORDERS.map((order) => (
                 <div key={order.id} className="glass p-8 md:p-10 rounded-[2.5rem] flex flex-col gap-10 border border-black/5 shadow-xl bg-white/50 hover:border-primary/20 transition-all">
                   
                   {/* Order Header */}
@@ -290,7 +320,7 @@ export default function ProfilePage() {
             <div className="glass p-20 rounded-[2.5rem] flex flex-col items-center justify-center text-center border border-black/5 shadow-xl bg-white/50 h-[400px]">
               <Settings className="w-16 h-16 text-primary/20 mb-8 animate-spin-slow" style={{ animationDuration: '12s' }} />
               <h3 className="text-2xl font-serif font-bold mb-3 text-foreground">Syncing Module...</h3>
-              <p className="text-muted text-sm max-w-xs mx-auto leading-relaxed">We're updating your secure vault. This section will be accessible shortly.</p>
+              <p className="text-muted text-sm max-w-xs mx-auto leading-relaxed">We&apos;re updating your secure vault. This section will be accessible shortly.</p>
             </div>
           )}
         </motion.div>
